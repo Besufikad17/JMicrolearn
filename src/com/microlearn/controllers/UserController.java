@@ -12,6 +12,18 @@ public class UserController {
 
     public static Scanner input = new Scanner(System.in);
 
+    public static int runPostOrUpdateQuery(Connection connection, String query) {
+        Statement statement;
+        int resultSet = 0;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
     public static int runPostOrUpdateQuery(Connection connection, User u){
         Statement statement;
         int resultSet = 0;
@@ -75,11 +87,43 @@ public class UserController {
         runGetQuery(connection, query);
     }
 
-    public static void getUserByFirstName(Connection connection){
+    public static void getUserByFullName(Connection connection){
         System.out.println("Enter user full name");
         String fname = input.next();
         String query = Queries.UserQueries.get(fname);
         runGetQuery(connection, query);
     }
+
+    public static void updateFullName(Connection connection){
+        System.out.println("Enter new full name and id");
+        String fname = input.next();
+        int id = input.nextInt();
+        String query = Queries.UserQueries.update(fname, id, "fname");
+        runPostOrUpdateQuery(connection, query);
+    }
+
+    public static void updateProfilePictureUrl(Connection connection){
+        System.out.println("Enter new profile picture url and id");
+        String pfp = input.next();
+        int id = input.nextInt();
+        String query = Queries.UserQueries.update(pfp, id, "pfp");
+        runPostOrUpdateQuery(connection, query);
+    }
+
+    public static void updatePassword(Connection connection){
+        System.out.println("Enter new password and id");
+        String pwd = input.next();
+        int id = input.nextInt();
+        String query = Queries.UserQueries.update(pwd, id, "pwd");
+        runPostOrUpdateQuery(connection, query);
+    }
+
+    public static void delete(Connection connection){
+        System.out.println("Enter user id");
+        int id = input.nextInt();
+        String query = Queries.UserQueries.delete(id);
+        runPostOrUpdateQuery(connection, query);
+    }
+
 
 }
