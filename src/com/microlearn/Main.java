@@ -1,5 +1,6 @@
 package com.microlearn;
 
+import com.microlearn.controllers.CourseController;
 import com.microlearn.controllers.InstructorController;
 import com.microlearn.controllers.UserController;
 
@@ -14,6 +15,8 @@ public class Main {
     public static void main(String[] args) {
 
         String url = "jdbc:mysql://127.0.0.1:3306/microlearn";
+
+        String hostedPassword = "Bsk5&fQTlrib%#S";
         String username = "root";
         String password = "";
         Scanner input = new Scanner(System.in);
@@ -154,21 +157,25 @@ public class Main {
                         char courseChoice = printCourseMenu();
                         switch (courseChoice){
                             case '1':
+                                CourseController.addCourse(connection);
                                 break;
                             case '2':
                                 while(true){
                                     char ch;
-                                    System.out.println("1. All Ccourses");
+                                    System.out.println("1. All Courses");
                                     System.out.println("2. By id");
                                     System.out.println("3. By title");
                                     System.out.println("4. Main menu");
                                     ch = input.next().charAt(0);
                                     switch (ch){
                                         case '1':
+                                            CourseController.getAllCourses(connection);
                                             break;
                                         case '2':
+                                            CourseController.getCourseById(connection);
                                             break;
                                         case '3':
+                                            CourseController.getCourseByTitle(connection);
                                             break;
                                         case '4':
                                             continue mainLoop;
@@ -177,33 +184,38 @@ public class Main {
                                     }
                                 }
                             case '3':
-//                                while(true){
-//                                    char ch;
-//                                    System.out.println("1. Change title");
-//                                    System.out.println("2. Change profile picture url");
-//                                    System.out.println("3. Change password");
-//                                    System.out.println("4. Main menu");
-//                                    ch = input.next().charAt(0);
-//                                    switch (ch){
-//                                        case '1':
-//                                            UserController.updateFullName(connection);
-//                                            break;
-//                                        case '2':
-//                                            UserController.updateProfilePictureUrl(connection);
-//                                            break;
-//                                        case '3':
-//                                            UserController.updatePassword(connection);
-//                                            break;
-//                                        case '4':
-//                                            continue mainLoop;
-//                                        default:
-//                                            System.out.println("Invalid input!!");
-//                                    }
-//                                }
+                                while(true){
+                                    char ch;
+                                    System.out.println("1. Change title");
+                                    System.out.println("2. Change cover picture url");
+                                    System.out.println("3. Change duration");
+                                    System.out.println("4. Change price");
+                                    System.out.println("5. Main menu");
+                                    ch = input.next().charAt(0);
+                                    switch (ch){
+                                        case '1':
+                                            CourseController.updateCourseTitle(connection);
+                                            break;
+                                        case '2':
+                                            CourseController.updateCourseCoverPictureUrl(connection);
+                                            break;
+                                        case '3':
+                                            CourseController.updateCourseDuration(connection);
+                                            break;
+                                        case '4':
+                                            CourseController.updateCoursePrice(connection);
+                                            break;
+                                        case '5':
+                                            continue mainLoop;
+                                        default:
+                                            System.out.println("Invalid input!!");
+                                    }
+                                }
                             case '4':
-                                continue mainLoop;
+                                CourseController.deleteCourse(connection);
+                                break;
                             case '5':
-                                System.exit(0);
+                                continue mainLoop;
                             default:
                                 System.out.println("Invalid input!!");
                         }
