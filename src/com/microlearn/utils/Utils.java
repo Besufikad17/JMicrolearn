@@ -41,18 +41,38 @@ public class Utils {
         Statement statement;
         ResultSet resultSet;
 
+        String[] userAndInstructorAttrs = {"fullname", "profilepictureurl", "password"};
+        String[] courseAttrs = {"title", "instructor", "estimatedtime", "publishedate", "coverpictureurl", "price"};
+
         try{
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             int count = 0;
-            while(resultSet.next()){
-                System.out.println(type + ":" + count + 1);
-                System.out.println("Full name :" + resultSet.getObject("fullname"));
-                System.out.println("Profile picture url :" + resultSet.getObject("profilepictureurl"));
-                System.out.println("password :" + resultSet.getObject("password"));
-                System.out.println();
-                count ++;
+
+            if(type.equals("User") || type.equals("Instructor")){
+                while(resultSet.next()){
+                    System.out.println(type + ":" + count + 1);
+                    System.out.println("Full name :" + resultSet.getObject("fullname"));
+                    System.out.println("Profile picture url :" + resultSet.getObject("profilepictureurl"));
+                    System.out.println("password :" + resultSet.getObject("password"));
+                    System.out.println();
+                    count ++;
+                }
+            }else{
+                while(resultSet.next()){
+                    System.out.println(type + ":" + count + 1);
+                    System.out.println("Title :" + resultSet.getObject("title"));
+                    System.out.println("Cover picture url :" + resultSet.getObject("coverpictureurl"));
+                    System.out.println("Instructor :" + resultSet.getObject("instructor"));
+                    System.out.println("Published date :" + resultSet.getObject("publishedate"));
+                    System.out.println("Estimated hour :" + resultSet.getObject("estimatedtime"));
+                    System.out.println("Price :" + resultSet.getObject("price"));
+                    System.out.println();
+                    count ++;
+                }
             }
+
+
         }catch (Exception e){
             e.printStackTrace();
         }

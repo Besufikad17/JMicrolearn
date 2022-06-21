@@ -5,6 +5,7 @@ import com.microlearn.utils.Queries;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.microlearn.utils.Utils.runGetQuery;
@@ -15,22 +16,35 @@ public class CourseController {
     public static Scanner input = new Scanner(System.in);
 
     public static void addCourse(Connection connection){
+        System.out.println("Title : ");
         String title = input.next();
+
+        System.out.println("Instructor : ");
         String instructor = input.next();
+
+        System.out.println("Cover picture link : ");
         String coverPictureUrl = input.next();
+
+        System.out.println("Price : ");
         String price =  input.next();
+
+        System.out.println("Duration : ");
         String duration = input.next();
 
         boolean isVerified = false;
         String details = "{}";
 
         Course course = new Course(title, instructor, coverPictureUrl, duration, details, price);
+        System.out.println(Queries.CourseQueries.insert(course));
+
         Statement statement;
         int resultSet = 0;
         try {
             statement = connection.createStatement();
             resultSet = statement.executeUpdate(Queries.CourseQueries.insert(course));
+
             boolean isDone = resultSet == 1;
+
             if (isDone){
                 System.out.println("Done");
             }else{

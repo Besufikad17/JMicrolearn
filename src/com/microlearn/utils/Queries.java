@@ -145,8 +145,8 @@ public class Queries {
             String flag = "INSERT INTO `courses` (`course_id`, `title`, `publishedate`, `instructor`, `estimatedtime`, `details`, `coverpictureurl`, `price`) VALUES ";
 
             return flag + "(NULL, \"" + course.getTitle() + "\",\"" + course.getPublishedDate() + "\",\"" +
-                    course.getInstructor() + "\"," + "\"false\""+ ",\"" +
-                    course.getEstimatedTime() + "\",NULL\"," + course.getCoverPictureUrl() + "\",\"" + course.getPrice()  +");";
+                    course.getInstructor() + "\"" + ",\"" +
+                    course.getEstimatedTime() + "\",NULL,\"" + course.getCoverPictureUrl() + "\",\"" + course.getPrice()  +"\");";
         }
 
         /**
@@ -163,7 +163,7 @@ public class Queries {
          * */
 
         public static String get(int id){
-            return "SELECT * FROM `courses` WHERE user_id=" + id + ";";
+            return "SELECT * FROM `courses` WHERE course_id=" + id + ";";
         }
 
         /**
