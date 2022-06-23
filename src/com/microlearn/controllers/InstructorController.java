@@ -19,7 +19,7 @@ public class InstructorController {
         boolean isVerified = false;
         String details = "{}";
 
-        Instructor instructor = new Instructor(name, profilePictureUrl, isVerified, pwd, details);
+        Instructor instructor = new Instructor(name, profilePictureUrl, pwd, null, null);
         Statement statement;
         int resultSet = 0;
         try {

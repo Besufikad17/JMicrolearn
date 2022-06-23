@@ -6,7 +6,6 @@ import com.microlearn.controllers.UserController;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.microlearn.utils.Utils.*;

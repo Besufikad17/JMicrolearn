@@ -8,20 +8,20 @@ public class User {
 
     public String fullName;
     public String profilePictureUrl;
-    public boolean isVerified;
     public String joinedDate;
     public String password;
-    public String details;
+    public String enrolledCourses;
+    public String balance;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Date date = new Date();
 
-    public User(String fullName, String profilePictureUrl, boolean isVerified, String password, String details) {
+    public User(String fullName, String profilePictureUrl, String password, String enrolledCourses, String balance) {
         this.fullName = fullName;
         this.profilePictureUrl = profilePictureUrl;
-        this.isVerified = isVerified;
         this.joinedDate = dateFormat.format(date);
         this.password = password;
-        this.details = details;
+        this.enrolledCourses = enrolledCourses;
+        this.balance = balance;
     }
 
     public String getFullName() {
@@ -32,10 +32,6 @@ public class User {
         return profilePictureUrl;
     }
 
-    public boolean isVerified() {
-        return isVerified;
-    }
-
     public String getJoinedDate() {
         return joinedDate;
     }
@@ -44,7 +40,12 @@ public class User {
         return password;
     }
 
-    public String getDetails() {
-        return details;
+    public String getEnrolledCourses() {
+        return enrolledCourses;
+    }
+
+    public String getBalance() {
+        return balance;
     }
 }
+

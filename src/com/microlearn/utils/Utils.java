@@ -2,16 +2,23 @@ package com.microlearn.utils;
 
 import com.microlearn.models.User;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
+import java.io.*;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
 
     public static Scanner input = new Scanner(System.in);
+    public static String JSONURI =  "src/com/microlearn/models/json/users.json";
 
     public static int runPostOrUpdateQuery(Connection connection, String query) {
         Statement statement;
@@ -40,9 +47,6 @@ public class Utils {
     public static void runGetQuery(Connection connection, String query, String type){
         Statement statement;
         ResultSet resultSet;
-
-        String[] userAndInstructorAttrs = {"fullname", "profilepictureurl", "password"};
-        String[] courseAttrs = {"title", "instructor", "estimatedtime", "publishedate", "coverpictureurl", "price"};
 
         try{
             statement = connection.createStatement();
@@ -150,4 +154,114 @@ public class Utils {
         }
         return encryptedpassword;
     }
+
+    public static String getCourses(int user_id, Connection connection){
+        String query = Queries.UserQueries.get(user_id);
+
+        String courses = null;
+        Statement statement;
+        ResultSet resultSet;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                courses = String.valueOf(resultSet.getObject("courses"));
+            }
+            int count = 0;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    public static boolean isEnrolled(String[] courses, String course){
+        for(String s: courses){
+            if(s.equals(course)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String updateCourses(String course_id, String courses){
+        String[] cs =courses.split(",");
+
+        if(!isEnrolled(cs, course_id)){
+            courses = courses + "," + course_id;
+        }else{
+            return "course exists";
+        }
+        return courses;
+    }
+
+    public static void toJSON(User user){
+        String path = "src/com/microlearn/models/json/users.json";
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("Full name", user.fullName);
+            json.put("Password", user.password);
+            json.put("Profile picture url", user.profilePictureUrl);
+            json.put("Balance", user.balance);
+            json.put("Enrolled courses", user.enrolledCourses.split(","));
+            json.put("Role", "user");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try (PrintWriter out = new PrintWriter(new FileWriter(path))) {
+            out.write(json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void flush(String path){
+        File file = new File(Paths.get(path).toString());
+        file.setWritable(true);
+        BufferedOutputStream bufferedOutputStream = null;
+        try {
+            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(Paths.get(path).toString()));
+            bufferedOutputStream.write("{}".getBytes());
+            bufferedOutputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateJSONData(String newData, String dataType){
+        JSONObject json = null;
+        try {
+            json = new JSONObject("src/com/microlearn/models/json/users.json");
+            json.remove(dataType);
+            json.put(dataType, newData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try (PrintWriter out = new PrintWriter(new FileWriter("src/com/microlearn/models/json/users.json"))) {
+            out.write(json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void printJSONData(){
+        JSONObject json = null;
+        try {
+            json = new JSONObject(JSONURI);
+            System.out.println("Full name :" + json.get("Full name"));
+            System.out.println("Profile picture url :" + json.get("Profile picture url"));
+            System.out.println("Balance :" + json.get("Balance"));
+            System.out.println("Enrolled courses :" + json.get("Enrolled courses"));
+            System.out.println("Password :" + json.get("Password"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 }

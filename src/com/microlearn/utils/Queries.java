@@ -4,6 +4,10 @@ import com.microlearn.models.Course;
 import com.microlearn.models.Instructor;
 import com.microlearn.models.User;
 
+import java.sql.Connection;
+
+import static com.microlearn.utils.Utils.*;
+
 public class Queries {
 
     public static class UserQueries {
@@ -199,6 +203,17 @@ public class Queries {
          * */
         public static String delete(int id){
             return "DELETE FROM `courses` WHERE course_id=" + id + ";";
+        }
+    }
+
+    public static class PaymentQueries {
+
+        public static String enroll(int course_id, int user_id, Connection connection){
+            String flag = "UPDATE `users` SET courses = ";
+            String courses = getCourses(user_id, connection) == null ?
+                    String.valueOf(course_id) : updateCourses(String.valueOf(course_id), getCourses(user_id, connection));
+
+            return flag  + courses + " WHERE user_id = " + user_id;
         }
     }
 }
